@@ -3,13 +3,36 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {
+    BrowserRouter,
+    createBrowserRouter,
+    RouterProvider,
+  } from "react-router-dom";
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { routes } from './routing/routes';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const theme = extendTheme({
+    colors: {
+      brand: {
+        100: "#f7fafc",
+        // ...
+        900: "#1a202c",
+      },
+    },
+  })
+
+const router = createBrowserRouter(routes)
+
+
 root.render(
   <React.StrictMode>
-    <App />
+    <ChakraProvider theme={theme}>
+        <RouterProvider router={router} />
+    </ChakraProvider>
   </React.StrictMode>
 );
 
