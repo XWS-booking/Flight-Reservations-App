@@ -1,7 +1,7 @@
 import { RouteObject } from "react-router-dom";
 import App from "../App";
 import { LoginPage } from "../modules/auth/pages/login.page";
-import { FlightPage } from "../pages/FlightPage";
+import { FlightPage } from "../pages/FlightPage/FlightPage";
 import { HomePage } from "../pages/HomePage/HomePage";
 
 export const routes: RouteObject[] = [
@@ -19,11 +19,11 @@ export const routes: RouteObject[] = [
             },
             {
                 path: '/flights',
-                element: <FlightPage/>
+                element: <FlightPage />
             },
             {
-              path: "/login",
-              element: <LoginPage />,
+                path: "/login",
+                element: <LoginPage />,
             },
         ]
     }

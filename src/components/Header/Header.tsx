@@ -33,9 +33,11 @@ export const Header = () => {
           alignItems={"center"}
           justifyContent="space-between"
         >
-          <Text color={"white"} fontWeight="700">
-            Flight.com
-          </Text>
+          <Link href="/">
+            <Text color={"white"} fontWeight="700">
+              Flight.com
+            </Text>
+          </Link>
           <Flex gap="15px">
             <Link onClick={onOpenLogin} color={"white"}>
               Login
