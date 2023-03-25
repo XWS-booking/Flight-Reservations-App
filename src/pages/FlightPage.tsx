@@ -19,7 +19,6 @@ export const FlightPage = () => {
 
     const handlePageClick = (event: any) => {
         getFlights({id: 0, date: new Date("0001-01-01T00:00:00Z"), departure: "", destination: "", seats: 0, price: 0}, event.selected + 1, 2)
-        console.log(getFlightsRes)
       };
 
     return (
@@ -51,33 +50,23 @@ export const FlightPage = () => {
                 </Tbody>
             </Table>
         </TableContainer>
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                padding: 20,
-                boxSizing: 'border-box',
-                width: '100%',
-                height: '100%',
-            }}
-        >
-        <ReactPaginate
-            activeClassName={'item active '}
-            breakClassName={'item break-me '}
-            breakLabel={'...'}
-            containerClassName={'pagination'}
-            disabledClassName={'disabled-page'}
-            marginPagesDisplayed={2}
-            nextClassName={"item next "}
-            nextLabel=">"
-            onPageChange={handlePageClick} 
-            pageCount={Math.ceil(totalCount/2)}
-            pageClassName={'item pagination-page '}
-            pageRangeDisplayed={2}
-            previousClassName={"item previous"}
-            previousLabel="<"/>
-    </div>
+        <Flex flexDirection='column' justifyContent='column' padding='20' boxSizing='border-box' width='100%' height='100%'>
+            <ReactPaginate
+                activeClassName={'item active '}
+                breakClassName={'item break-me '}
+                breakLabel={'...'}
+                containerClassName={'pagination'}
+                disabledClassName={'disabled-page'}
+                marginPagesDisplayed={2}
+                nextClassName={"item next "}
+                nextLabel=">"
+                onPageChange={handlePageClick} 
+                pageCount={Math.ceil(totalCount/2)}
+                pageClassName={'item pagination-page '}
+                pageRangeDisplayed={2}
+                previousClassName={"item previous"}
+                previousLabel="<"/>
+        </Flex>
         </>
     )
 }

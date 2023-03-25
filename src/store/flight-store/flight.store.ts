@@ -65,7 +65,6 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
             })
             set(
                 produce((state: FlightStore) => {
-                    console.log(res.data)
                     state.getFlightsRes = res.data.data
                     state.totalCount = res.data.totalCount
                     return state
