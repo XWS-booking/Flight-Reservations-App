@@ -12,30 +12,28 @@ export const FlightPage = () => {
     const getFlights = useApplicationStore(state => state.getFlights)
     const totalCount = useApplicationStore(state => state.totalCount)
     const getFlightsRes = useApplicationStore(state => state.getFlightsRes)
+
     const [data, setData] = useState({
-        id: 0,
-        date: "0001-01-01T00:00:00Z",
+        id: "",
+        date: new Date("0001-01-01T00:00:00Z"),
         departure: "",
         destination: "",
         seats: 0,
         price: 0,
     })
-    const sendData = (data: any) => {
-        setData(data)
-      }
    
     useEffect(()=>{
-        getFlights({id: 0, date: new Date("0001-01-01T00:00:00Z"), departure: "", destination: "", seats: 0, price: 0}, 1, 2)
+        getFlights(data, 1, 2)
     }, [])
 
 
     const handlePageClick = (event: any) => {
-        getFlights({id: data.id, date: new Date(data.date), departure: data.departure, destination: data.destination, seats: data.seats, price: data.price}, event.selected + 1, 2)
+        getFlights(data, event.selected + 1, 2)
       };
 
     return (
         <>
-        <SearchFlight sendData={sendData}></SearchFlight>
+        <SearchFlight setData={setData}></SearchFlight>
         <TableContainer>
             <Table variant='striped' colorScheme='teal'>
                 <TableCaption>Flights</TableCaption>
@@ -84,3 +82,7 @@ export const FlightPage = () => {
         </>
     )
 }
+function lala() {
+    throw new Error('Function not implemented.');
+}
+

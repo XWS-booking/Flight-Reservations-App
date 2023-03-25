@@ -6,8 +6,8 @@ import { AppStore } from "../application.store"
 
 export type FlightStoreState = {
     addFlightRes: any
-    getFlightsRes: any
-    totalCount: any
+    getFlightsRes: Flight[]
+    totalCount: number
 }
 export type FlightActions = {
     createFlight: (flight: Flight) => Promise<void>
@@ -16,8 +16,8 @@ export type FlightActions = {
 
 export const state: FlightStoreState = {
     addFlightRes: null,
-    getFlightsRes: null,
-    totalCount: null
+    getFlightsRes: [],
+    totalCount: 0
 }
 
 
@@ -27,13 +27,7 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
     ...state,
     createFlight: async (flight: Flight) => {
         try {
-            const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/flights/add`, {
-                'Seats': parseInt(flight.seats.toString()),
-                'Date': new Date(flight.date),
-                'Departure': flight.departure,
-                'Destination': flight.destination,
-                'Price': parseInt(flight.price.toString())
-            }, {
+            const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/flights/add`, flight, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + get().token
@@ -50,15 +44,8 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
         }
     },
     getFlights: async (flight: Flight, pageNumber: number, pageSize: number) => {
-        console.log(flight)
         try {
-            const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/flights/getAll/${pageNumber}/${pageSize}`, {
-                'Seats': parseInt(flight.seats.toString()),
-                'Date': new Date(flight.date),
-                'Departure': flight.departure,
-                'Destination': flight.destination,
-                'Price': 0
-            }, {
+            const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/flights/getAll/${pageNumber}/${pageSize}`, flight, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + get().token
