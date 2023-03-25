@@ -28,11 +28,11 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
     createFlight: async (flight: Flight) => {
         try {
             const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/flights/add`, {
-                'Seats': flight.seats,
-                'Date': flight.date,
-                'StartLocation': flight.departure,
-                'EndLocation': flight.destination,
-                'Price': flight.price
+                'Seats': parseInt(flight.seats.toString()),
+                'Date': new Date(flight.date),
+                'Departure': flight.departure,
+                'Destination': flight.destination,
+                'Price': parseInt(flight.price.toString())
             }, {
                 headers: {
                     "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
             })
             set(
                 produce((state: FlightStore) => {
-                    state.addFlightRes.data = res.data
+                    state.addFlightRes = res.data
                     return state
                 })
             )
@@ -50,13 +50,14 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
         }
     },
     getFlights: async (flight: Flight, pageNumber: number, pageSize: number) => {
+        console.log(flight)
         try {
             const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/flights/getAll/${pageNumber}/${pageSize}`, {
-                'Seats': flight.seats,
-                'Date': flight.date,
-                'StartLocation': flight.departure,
-                'EndLocation': flight.destination,
-                'Price': flight.price
+                'Seats': parseInt(flight.seats.toString()),
+                'Date': new Date(flight.date),
+                'Departure': flight.departure,
+                'Destination': flight.destination,
+                'Price': 0
             }, {
                 headers: {
                     "Content-Type": "application/json",
