@@ -2,6 +2,7 @@ import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalF
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useApplicationStore } from '../../store/application.store'
+import { Flight } from '../../store/flight-store/types/flight.type'
 
 interface Props {
     isOpen: boolean
