@@ -10,6 +10,7 @@ interface Props {
 }
 
 type Inputs = {
+    id: string
     date: Date
     departure: string
     destination: string

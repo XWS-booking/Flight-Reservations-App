@@ -1,4 +1,5 @@
 export type Flight = {
+    id: string
     date: Date
     departure: string
     destination: string
