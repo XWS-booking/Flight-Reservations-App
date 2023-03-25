@@ -22,7 +22,7 @@ export type AuthStore = AuthStoreState & AuthActions
 export const authStoreSlice: StateCreator<AuthStore>= (set) => ({
     ...state,
     login: async ({email, password}: Login) => {
-        const rawResponse = await fetch('http://localhost:8000/auth/signin', {
+        const rawResponse = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/signin`, {
             method: 'POST',
             body: JSON.stringify({email, password}),
             headers: {

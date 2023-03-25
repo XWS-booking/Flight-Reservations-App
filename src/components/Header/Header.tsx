@@ -60,7 +60,7 @@ export const Header = () => {
         isOpen={isOpenLogin}
         onOpen={onOpenLogin}
         onClose={onCloseLogin}
-      ></LoginForm>
+      />
     </>
   );
 };
