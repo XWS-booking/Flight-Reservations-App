@@ -1,4 +1,5 @@
 import { create, StateCreator } from "zustand"
+import { DEFAULT_HEADERS } from "../../utils/auth.constants"
 import { Login } from "./types/login.type"
 import { Registration } from "./types/registration.type"
 
@@ -19,19 +20,31 @@ export const state: AuthStoreState = {
 
 export type AuthStore = AuthStoreState & AuthActions
 
-export const authStoreSlice: StateCreator<AuthStore>= (set) => ({
+export const authStoreSlice: StateCreator<AuthStore> = (set) => ({
     ...state,
-    login: async ({email, password}: Login) => {
+    login: async ({ email, password }: Login) => {
         const rawResponse = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/signin`, {
             method: 'POST',
-            body: JSON.stringify({email, password}),
-            headers: {
-            'Content-Type': 'application/json',
-            }
+            body: JSON.stringify({ email, password }),
+            headers: DEFAULT_HEADERS
         });
         const token = await rawResponse.json();
         set({ token: token['access_token'] })
     },
 
-    register: () => {}
+    register: async (data: Registration) => {
+
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/register`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: DEFAULT_HEADERS
+            })
+
+            const dt = await response.json()
+            console.log(dt)
+        } catch (e) {
+            console.log(e)
+        }
+    }
 })

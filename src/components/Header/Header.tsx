@@ -11,6 +11,7 @@ import { GiCommercialAirplane } from "react-icons/gi";
 import React from "react";
 import { CreateFlight } from "../Flight/CreateFlight";
 import { LoginForm } from "../Auth/LoginForm";
+import { RegistrationForm } from "../Auth/RegistrationForm";
 
 export const Header = () => {
   const {
@@ -22,6 +23,11 @@ export const Header = () => {
     isOpen: isOpenLogin,
     onOpen: onOpenLogin,
     onClose: onCloseLogin,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenRegistration,
+    onOpen: onOpenRegistration,
+    onClose: onCloseRegistration,
   } = useDisclosure();
 
   return (
@@ -42,7 +48,7 @@ export const Header = () => {
             <Link onClick={onOpenLogin} color={"white"}>
               Login
             </Link>
-            <Link color={"white"}>Register</Link>
+            <Link color={"white"} onClick={onOpenRegistration}>Register</Link>
           </Flex>
         </Flex>
         <Divider></Divider>
@@ -57,11 +63,16 @@ export const Header = () => {
         isOpen={isOpenAdd}
         onOpen={onOpenAdd}
         onClose={onCloseAdd}
-      ></CreateFlight>
+      />
       <LoginForm
         isOpen={isOpenLogin}
         onOpen={onOpenLogin}
         onClose={onCloseLogin}
+      />
+      <RegistrationForm
+        isOpen={isOpenRegistration}
+        onOpen={onOpenRegistration}
+        onClose={onCloseRegistration}
       />
     </>
   );

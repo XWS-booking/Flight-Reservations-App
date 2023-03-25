@@ -1,6 +1,5 @@
 import { RouteObject } from "react-router-dom";
 import App from "../App";
-import { LoginPage } from "../modules/auth/pages/login.page";
 import { FlightPage } from "../pages/FlightPage/FlightPage";
 import { HomePage } from "../pages/HomePage/HomePage";
 
@@ -11,20 +10,12 @@ export const routes: RouteObject[] = [
         children: [
             {
                 path: '',
-                element: <HomePage></HomePage>
-            },
-            {
-                path: '/login',
-                element: <LoginPage />
+                element: <HomePage />
             },
             {
                 path: '/flights',
                 element: <FlightPage />
-            },
-            {
-                path: "/login",
-                element: <LoginPage />,
-            },
+            }
         ]
     }
 

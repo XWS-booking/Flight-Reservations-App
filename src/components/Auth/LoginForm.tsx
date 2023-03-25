@@ -18,8 +18,8 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LOGIN_VALIDATION_SCHEMA } from "../../modules/auth/auth.constants";
 import { useApplicationStore } from "../../store/application.store";
+import { LOGIN_DEFAULT_VALUES, LOGIN_VALIDATION_SCHEMA } from "../../utils/auth.constants";
 
 export type FormValues = {
   email: string;
@@ -32,10 +32,6 @@ interface Props {
 }
 
 export const LoginForm = ({ isOpen, onOpen, onClose }: Props) => {
-  const defaultValues: FormValues = {
-    email: "",
-    password: "",
-  };
   let login = useApplicationStore((state) => state.login);
 
   const {
@@ -43,7 +39,7 @@ export const LoginForm = ({ isOpen, onOpen, onClose }: Props) => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormValues>({
-    defaultValues,
+    defaultValues: LOGIN_DEFAULT_VALUES,
     resolver: yupResolver(LOGIN_VALIDATION_SCHEMA),
   });
 
