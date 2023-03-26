@@ -1,7 +1,8 @@
 import {Box, Button, Flex, Input} from '@chakra-ui/react'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form } from 'react-router-dom';
 import { useApplicationStore } from '../../store/application.store'
+import { Role } from '../../store/auth-store/model/enums/role.enum';
 import { Flight } from '../../store/flight-store/types/flight.type';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 export const SearchFlight = ({setData}: Props) => {
 
     const getFlights = useApplicationStore(state => state.getFlights)
+    const user = useApplicationStore(state => state.user)
 
     const [flight, setFlight] = useState({
         id: "",
@@ -48,6 +50,9 @@ export const SearchFlight = ({setData}: Props) => {
     }
 
     return (
+        <>
+        {
+            (user?.role === Role.REGULAR || user == null) &&
         <Box padding="10">
         <Form onSubmit={onSubmit}>
             <Flex flexDirection='row'>
@@ -59,5 +64,6 @@ export const SearchFlight = ({setData}: Props) => {
             </Flex>
         </Form>
         </Box>
+        }  </>
     )
 }
