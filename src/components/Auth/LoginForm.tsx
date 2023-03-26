@@ -1,8 +1,6 @@
 import {
   Box,
   Button,
-  Text,
-  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -12,9 +10,8 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
-  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -36,19 +33,32 @@ interface Props {
 
 export const LoginForm = ({ isOpen, onOpen, onClose }: Props) => {
   let login = useApplicationStore((state) => state.login);
-  let user = useApplicationStore((state) => state.user);
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormValues>({
     defaultValues: LOGIN_DEFAULT_VALUES,
     resolver: yupResolver(LOGIN_VALIDATION_SCHEMA),
   });
-
-  const handleOnSubmit = (values: FormValues) => {
-    login(values);
-    console.log(user);
+  const toast = useToast();
+  const validateLogin = (isLoginValid: boolean) => {
+    if (!isLoginValid) {
+      toast({
+        title: "Login failed.",
+        description: "Email or password not valid.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+        position: "top-right",
+      });
+      return;
+    }
+    onClose();
+  };
+  const handleOnSubmit = async (values: FormValues) => {
+    const isLoginValid = await login(values);
+    validateLogin(isLoginValid);
   };
 
   return (
