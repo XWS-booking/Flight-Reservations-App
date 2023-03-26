@@ -19,7 +19,10 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useApplicationStore } from "../../store/application.store";
-import { LOGIN_DEFAULT_VALUES, LOGIN_VALIDATION_SCHEMA } from "../../utils/auth.constants";
+import {
+  LOGIN_DEFAULT_VALUES,
+  LOGIN_VALIDATION_SCHEMA,
+} from "../../utils/auth.constants";
 
 export type FormValues = {
   email: string;
@@ -33,7 +36,7 @@ interface Props {
 
 export const LoginForm = ({ isOpen, onOpen, onClose }: Props) => {
   let login = useApplicationStore((state) => state.login);
-
+  let user = useApplicationStore((state) => state.user);
   const {
     register,
     handleSubmit,
@@ -45,7 +48,7 @@ export const LoginForm = ({ isOpen, onOpen, onClose }: Props) => {
 
   const handleOnSubmit = (values: FormValues) => {
     login(values);
-    console.log(values);
+    console.log(user);
   };
 
   return (
