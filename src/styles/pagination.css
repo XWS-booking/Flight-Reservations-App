@@ -22,8 +22,8 @@
 
 .next {
   border-left: solid 1px #808e9b;
-  font-size: 40px;
-  height: 60px;
+  font-size: 30px;
+  height: 30px;
   position: absolute;
   right: 0;
   width: 150px;
@@ -31,7 +31,7 @@
 
 .pagination {
   align-items: center;
-  background-color: darkcyan;
+  background-color: white;
   display: flex;
   flex-direction: row;
   height: 60px;
@@ -46,8 +46,8 @@
 
 .previous {
   border-right: solid 1px #808e9b;
-  font-size: 40px;
-  height: 60px;
+  font-size: 30px;
+  height: 30px;
   left: 0;
   position: absolute;
   width: 150px;

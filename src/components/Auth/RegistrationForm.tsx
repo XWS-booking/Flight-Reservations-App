@@ -54,7 +54,7 @@ export const RegistrationForm = ({ isOpen, onOpen, onClose }: Props) => {
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>Login</ModalHeader>
+                <ModalHeader textAlign={'center'}>Register</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                     <Box mx={4} mb={6}>
@@ -98,7 +98,7 @@ export const RegistrationForm = ({ isOpen, onOpen, onClose }: Props) => {
                             mx={"auto"}
                             color={"white"}
                         >
-                            Login
+                            Register
                         </Button>
                     </Box>
                 </ModalBody>

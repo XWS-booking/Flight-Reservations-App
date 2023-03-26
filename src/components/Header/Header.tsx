@@ -12,6 +12,10 @@ import React from "react";
 import { CreateFlight } from "../Flight/CreateFlight";
 import { LoginForm } from "../Auth/LoginForm";
 import { RegistrationForm } from "../Auth/RegistrationForm";
+import { useApplicationStore } from "../../store/application.store";
+import { Role } from "../../store/auth-store/model/enums/role.enum";
+import { TiTicket } from 'react-icons/ti'
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const {
@@ -29,6 +33,9 @@ export const Header = () => {
     onOpen: onOpenRegistration,
     onClose: onCloseRegistration,
   } = useDisclosure();
+
+  const user = useApplicationStore(state => state.user)
+  const navigate = useNavigate()
 
   return (
     <>
@@ -53,10 +60,20 @@ export const Header = () => {
         </Flex>
         <Divider></Divider>
         <Flex m={"20px 0"}>
-          <Button onClick={onOpenAdd}>
-            <GiCommercialAirplane></GiCommercialAirplane>
-            Create flight
-          </Button>
+          {
+            user?.role === Role.ADMINISTRATOR &&
+            <Button onClick={onOpenAdd}>
+              <GiCommercialAirplane></GiCommercialAirplane>
+              Create flight
+            </Button>
+          }
+          {
+            user?.role === Role.REGULAR &&
+            <Button gap='10px' onClick={() => navigate('/ticket-history')}>
+              <TiTicket fontSize={20} />
+              My tickets
+            </Button>
+          }
         </Flex>
       </Box>
       <CreateFlight

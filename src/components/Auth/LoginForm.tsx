@@ -55,7 +55,7 @@ export const LoginForm = ({ isOpen, onOpen, onClose }: Props) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Login</ModalHeader>
+        <ModalHeader textAlign={'center'}>Login</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box mx={4} mb={6}>

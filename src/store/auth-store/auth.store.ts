@@ -1,11 +1,12 @@
 import { create, StateCreator } from "zustand"
 import { DEFAULT_HEADERS } from "../../utils/auth.constants"
+import { User } from "./model/user.model"
 import { Login } from "./types/login.type"
 import { Registration } from "./types/registration.type"
 
 export type AuthStoreState = {
     token: string | null,
-    user: any
+    user: User | null
 }
 export type AuthActions = {
     login: (data: Login) => void,
@@ -37,7 +38,7 @@ export const authStoreSlice: StateCreator<AuthStore> = (set) => ({
             }
         });
         const user = await resp.json();
-        set({ user: user})
+        set({ user: user })
         set({ token: token['access_token'] })
     },
 
