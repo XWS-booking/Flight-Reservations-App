@@ -10,7 +10,6 @@ export type AuthStoreState = {
 export type AuthActions = {
     login: (data: Login) => void,
     register: (data: Registration) => void,
-    getCurrentUser:() => void
 }
 
 export const state: AuthStoreState = {
@@ -56,18 +55,5 @@ export const authStoreSlice: StateCreator<AuthStore> = (set) => ({
         } catch (e) {
             console.log(e)
         }
-    },
-
-    getCurrentUser: async () => {
-        const rawResponse = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/user`, {
-            method: 'GET',
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + state.token
-            }
-        });
-        const user = await rawResponse.json();
-        console.log(user)
-        set({ user: user})
     },
 })
