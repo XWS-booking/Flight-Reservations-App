@@ -9,18 +9,24 @@ export type FlightStoreState = {
     getFlightsRes: Flight[]
     totalCount: number
     deleteFlightRes: any
+    purchaseTicketRes: any
+    userFlightTickets: any
 }
 export type FlightActions = {
     createFlight: (flight: Flight) => Promise<void>
     getFlights: (flight: Flight, pageNumber: number, pageSize: number) => Promise<void>
     deleteFlight: (flightId: string) => Promise<void>
+    purchaseFlightTicket: (flightId: string, quantity: number) => Promise<void>
+    getUserTicketHistory: () => Promise<void>
 }
 
 export const state: FlightStoreState = {
     addFlightRes: null,
     getFlightsRes: [],
     totalCount: 0,
-    deleteFlightRes: null
+    deleteFlightRes: null,
+    purchaseTicketRes: null,
+    userFlightTickets: null
 }
 
 
@@ -82,6 +88,43 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
             set(
                 produce((state: FlightStore) => {
                     state.deleteFlightRes = res.data
+                    return state
+                })
+            )
+        } catch (e) {
+            console.log(e)
+        }
+    },
+    purchaseFlightTicket: async (flightId: string, quantity: number) => {
+        try {
+            const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/flights/${flightId}/buy-tickets/${quantity}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + get().token
+                }
+            })
+            set(
+                produce((state: FlightStore) => {
+                    state.purchaseTicketRes = res.data
+                    return state
+                })
+            )
+        } catch (e) {
+            console.log(e)
+        }
+    },
+    getUserTicketHistory: async () => {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/flights/tickets/listing`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + get().token
+                }
+            })
+            set(
+                produce((state: FlightStore) => {
+                    state.userFlightTickets = res.data.tickets
+                    console.log('res ', state.userFlightTickets)
                     return state
                 })
             )

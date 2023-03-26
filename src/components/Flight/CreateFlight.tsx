@@ -42,7 +42,7 @@ export const CreateFlight = ({ isOpen, onOpen, onClose }: Props) => {
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>Create new flight</ModalHeader>
+                <ModalHeader textAlign={'center'}>Create new flight</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody width='100%' display='flex' flexDirection='column' alignItems='center'>
                     <Input {...register("date", { required: true })} placeholder='Flight date' type='datetime-local' mb={'15px'} width='80%'></Input>
@@ -52,7 +52,7 @@ export const CreateFlight = ({ isOpen, onOpen, onClose }: Props) => {
                     <Input {...register("price", { required: true })} placeholder='Price' type='number' mb={'15px'} width='80%'></Input>
                 </ModalBody>
                 <ModalFooter width='100%' display='flex' justifyContent='center'>
-                    <Button width='80%' onClick={handleSubmit(onSubmit)}>Create flight</Button>
+                    <Button bg={'#003b95'} color={'#fff'} _hover={{ bg: '#136ed1' }} width='80%' onClick={handleSubmit(onSubmit)}>Create flight</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal >
