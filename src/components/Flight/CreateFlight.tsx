@@ -22,10 +22,20 @@ type Inputs = {
 export const CreateFlight = ({ isOpen, onOpen, onClose }: Props) => {
 
     const createFlight = useApplicationStore(state => state.createFlight)
+    const getFlights = useApplicationStore(state => state.getFlights)
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = async data => {
         await createFlight(data)
+        onClose()
+        await getFlights({
+            id: "",
+            date: new Date("0001-01-01T00:00:00Z"),
+            departure: "",
+            destination: "",
+            seats: 0,
+            price: 0,
+        }, 1, 2)
     }
 
     return (
