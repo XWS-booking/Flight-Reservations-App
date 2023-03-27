@@ -1,7 +1,7 @@
 /* .item must be first */
 .item {
   align-items: center;
-  color: #FFF;
+  color: black;
   cursor: pointer;
   display: flex;
   font-size: 14px;
