@@ -6,11 +6,11 @@ import { Role } from '../../store/auth-store/model/enums/role.enum';
 import { Flight } from '../../store/flight-store/types/flight.type';
 
 interface Props {
-   setData: (flight: Flight) => void
+   sendData: (flight: Flight) => void
 }
 
 
-export const SearchFlight = ({setData}: Props) => {
+export const SearchFlight = ({sendData}: Props) => {
 
     const getFlights = useApplicationStore(state => state.getFlights)
     const user = useApplicationStore(state => state.user)
@@ -20,6 +20,7 @@ export const SearchFlight = ({setData}: Props) => {
         date: new Date("0001-01-01T00:00:00Z"),
         departure: "",
         destination: "",
+        freeSeats: 0,
         seats: 0,
         price: 0,
     })
@@ -39,14 +40,14 @@ export const SearchFlight = ({setData}: Props) => {
            destination: event.target.value});
     };
 
-    const handleSeatsInputChange = (event: any) => {
+    const handleFreeSeatsInputChange = (event: any) => {
         setFlight({...flight, 
-           seats: parseInt(event.target.value)});
+           freeSeats: parseInt(event.target.value)});
       };
     
     const onSubmit = async () => {
         await getFlights(flight, 1, 2)
-        setData(flight)
+        sendData(flight)
     }
 
     return (
@@ -59,7 +60,7 @@ export const SearchFlight = ({setData}: Props) => {
             <Input name="date" onChange={handleDateInputChange} placeholder='Flight date' type='date'></Input>
             <Input name="departure" onChange={handleDepartureInputChange} placeholder='Flight departure'></Input>
             <Input name="destination" onChange={handleDestinationInputChange} placeholder='Flight destination'></Input>
-            <Input name="seats"  onChange={handleSeatsInputChange} placeholder='Minimum seats' type='number'></Input>
+            <Input name="freeSeats"  onChange={handleFreeSeatsInputChange} placeholder='Minimum free seats' type='number' min='0'></Input>
             <Button type="submit" mb={'15px'} width="200px">Search</Button>
             </Flex>
         </Form>

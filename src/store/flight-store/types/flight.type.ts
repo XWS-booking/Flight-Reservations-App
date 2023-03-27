@@ -5,5 +5,5 @@ export type Flight = {
     destination: string
     seats: number
     price: number
-    freeSeats?: number
+    freeSeats: number
 }
