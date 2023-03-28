@@ -8,7 +8,6 @@ import { SearchFlight } from '../../components/Flight/SearchFlight';
 import { BsFillTrash3Fill, BsFillCartPlusFill } from 'react-icons/bs'
 import { Flight } from '../../store/flight-store/types/flight.type';
 import { Role } from '../../store/auth-store/model/enums/role.enum';
-import { Counter } from '../../components/Counter/Counter';
 import { PurchaseFlightTicket } from '../../components/Flight/PurchaseFlightTicket';
 
 export const FlightPage = () => {
@@ -27,6 +26,7 @@ export const FlightPage = () => {
         date: new Date("0001-01-01T00:00:00Z"),
         departure: "",
         destination: "",
+        freeSeats: 0,
         seats: 0,
         price: 0,
     })
@@ -35,6 +35,11 @@ export const FlightPage = () => {
         getFlights(data, 1, 2)
     }, [])
 
+
+    const sendData = (flight: Flight) => {
+        setData(flight)
+        setCurrentPage(1)
+    };
 
     const handlePageClick = async (event: any) => {
         await getFlights(data, event.selected + 1, 2)
@@ -54,7 +59,7 @@ export const FlightPage = () => {
 
     return (
         <>
-            <SearchFlight setData={setData}></SearchFlight>
+            <SearchFlight sendData={sendData}></SearchFlight>
             <TableContainer flex={1}>
                 <Table variant='striped' colorScheme='teal'>
                     <TableCaption>Flights</TableCaption>
@@ -63,7 +68,8 @@ export const FlightPage = () => {
                             <Th>Date</Th>
                             <Th>Departure</Th>
                             <Th>Destination</Th>
-                            <Th>Seats</Th>
+                            <Th>Maximum Seats</Th>
+                            <Th>Free Seats</Th>
                             <Th>Ticket price</Th>
                             <Th>Total price</Th>
                             {
@@ -80,6 +86,7 @@ export const FlightPage = () => {
                                     <Td>{item.departure}</Td>
                                     <Td>{item.destination}</Td>
                                     <Td>{item.seats}</Td>
+                                    <Td>{item.freeSeats}</Td>
                                     <Td>{item.price} RSD</Td>
                                     <Td>{item.seats * item.price} RSD</Td>
                                     {
@@ -107,6 +114,7 @@ export const FlightPage = () => {
             <Flex flexDirection='column' justifyContent='column' padding='15px 20px' boxSizing='border-box' width='100%' height='100%' mt={'auto'}>
                 <ReactPaginate
                     activeClassName={'item active '}
+                    forcePage={currentPage - 1}
                     breakClassName={'item break-me '}
                     breakLabel={'...'}
                     containerClassName={'pagination'}

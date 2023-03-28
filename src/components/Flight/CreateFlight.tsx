@@ -19,6 +19,7 @@ type Inputs = {
     destination: string
     seats: number
     price: number
+    freeSeats: number
 };
 
 export const CreateFlight = ({ isOpen, onOpen, onClose }: Props) => {
@@ -39,6 +40,7 @@ export const CreateFlight = ({ isOpen, onOpen, onClose }: Props) => {
             destination: "",
             seats: 0,
             price: 0,
+            freeSeats: 0
         }, 1, 2)
     }
 

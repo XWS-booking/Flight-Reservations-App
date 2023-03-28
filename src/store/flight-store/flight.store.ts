@@ -41,7 +41,8 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
                 departure: flight.departure,
                 seats: parseInt(flight.seats.toString()),
                 price: parseInt(flight.price.toString()),
-                date: new Date(flight.date).toISOString()
+                date: new Date(flight.date).toISOString(),
+                freeSeats: parseInt(flight.seats.toString())
             }, {
                 headers: {
                     "Content-Type": "application/json",
