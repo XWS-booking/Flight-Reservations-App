@@ -13,6 +13,7 @@ interface Props {
 export const SearchFlight = ({sendData}: Props) => {
 
     const getFlights = useApplicationStore(state => state.getFlights)
+    const updateGetFlightResState = useApplicationStore(state => state.updateGetFlightResState)
     const user = useApplicationStore(state => state.user)
 
     const [flight, setFlight] = useState({
@@ -46,6 +47,7 @@ export const SearchFlight = ({sendData}: Props) => {
       };
     
     const onSubmit = async () => {
+        await updateGetFlightResState()
         await getFlights(flight, 1, 4)
         sendData(flight)
     }

@@ -1,4 +1,4 @@
-import { Button, Flex, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
+import { Button, Flex, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useApplicationStore } from '../../store/application.store';
 import "../../styles/pagination.css"
@@ -13,6 +13,7 @@ import { PurchaseFlightTicket } from '../../components/Flight/PurchaseFlightTick
 export const FlightPage = () => {
 
     const getFlights = useApplicationStore(state => state.getFlights)
+    const updateGetFlightResState = useApplicationStore(state => state.updateGetFlightResState)
     const totalCount = useApplicationStore(state => state.totalCount)
     const getFlightsRes = useApplicationStore(state => state.getFlightsRes)
     const deleteFlight = useApplicationStore(state => state.deleteFlight)
@@ -32,6 +33,7 @@ export const FlightPage = () => {
     })
 
     useEffect(() => {
+        updateGetFlightResState()
         getFlights(data, 1, 4)
     }, [])
 
@@ -42,6 +44,8 @@ export const FlightPage = () => {
     };
 
     const handlePageClick = async (event: any) => {
+
+        await updateGetFlightResState()
         await getFlights(data, event.selected + 1, 4)
         setCurrentPage(event.selected + 1)
     };
@@ -111,6 +115,11 @@ export const FlightPage = () => {
                     </Tbody>
                 </Table>
             </TableContainer>
+            { getFlightsRes.length == 0 &&
+                <Flex justifyContent='center'>
+                    <Spinner size='xl' />
+                </Flex>
+            }
             <Flex flexDirection='column' justifyContent='column' padding='15px 20px' boxSizing='border-box' width='100%' height='100%' mt={'auto'}>
                 <ReactPaginate
                     activeClassName={'item active '}

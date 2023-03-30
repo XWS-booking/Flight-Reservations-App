@@ -2,7 +2,7 @@ import axios from "axios"
 import { create, StateCreator } from "zustand"
 import { Flight } from "./types/flight.type"
 import produce from "immer"
-import { AppStore } from "../application.store"
+import { AppStore, useApplicationStore } from "../application.store"
 
 export type FlightStoreState = {
     addFlightRes: any
@@ -18,6 +18,7 @@ export type FlightActions = {
     deleteFlight: (flightId: string) => Promise<void>
     purchaseFlightTicket: (flightId: string, quantity: number) => Promise<void>
     getUserTicketHistory: () => Promise<void>
+    updateGetFlightResState: () => Promise<void>
 }
 
 export const state: FlightStoreState = {
@@ -28,7 +29,6 @@ export const state: FlightStoreState = {
     purchaseTicketRes: null,
     userFlightTickets: null
 }
-
 
 export type FlightStore = FlightStoreState & FlightActions
 
@@ -126,6 +126,18 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
                 produce((state: FlightStore) => {
                     state.userFlightTickets = res.data.tickets
                     console.log('res ', state.userFlightTickets)
+                    return state
+                })
+            )
+        } catch (e) {
+            console.log(e)
+        }
+    },
+    updateGetFlightResState: async () => {
+        try {
+            set(
+                produce((state: FlightStore) => {
+                    state.getFlightsRes = []
                     return state
                 })
             )
