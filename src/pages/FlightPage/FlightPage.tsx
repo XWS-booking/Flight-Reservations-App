@@ -32,7 +32,7 @@ export const FlightPage = () => {
     })
 
     useEffect(() => {
-        getFlights(data, 1, 2)
+        getFlights(data, 1, 4)
     }, [])
 
 
@@ -42,19 +42,19 @@ export const FlightPage = () => {
     };
 
     const handlePageClick = async (event: any) => {
-        await getFlights(data, event.selected + 1, 2)
+        await getFlights(data, event.selected + 1, 4)
         setCurrentPage(event.selected + 1)
     };
 
     const handleDeleteFlight = async (id: string) => {
         await deleteFlight(id)
-        await getFlights(data, currentPage, 2)
+        await getFlights(data, currentPage, 4)
     }
 
     const handlePurchase = async (flightId: string, quantity: number) => {
         await purchaseFlightTicket(flightId, quantity)
         onClose()
-        await getFlights(data, currentPage, 2)
+        await getFlights(data, currentPage, 4)
     }
 
     return (
@@ -123,7 +123,7 @@ export const FlightPage = () => {
                     nextClassName={"item next "}
                     nextLabel=">"
                     onPageChange={handlePageClick}
-                    pageCount={Math.ceil(totalCount / 2)}
+                    pageCount={Math.ceil(totalCount / 4)}
                     pageClassName={'item pagination-page '}
                     pageRangeDisplayed={2}
                     previousClassName={"item previous"}

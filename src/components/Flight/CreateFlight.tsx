@@ -37,7 +37,7 @@ export const CreateFlight = ({ isOpen, onOpen, onClose }: Props) => {
             seats: 0,
             price: 0,
             freeSeats: 0
-        }, 1, 2)
+        }, 1, 4)
     }
 
     return (

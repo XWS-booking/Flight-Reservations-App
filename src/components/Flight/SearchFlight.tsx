@@ -46,7 +46,7 @@ export const SearchFlight = ({sendData}: Props) => {
       };
     
     const onSubmit = async () => {
-        await getFlights(flight, 1, 2)
+        await getFlights(flight, 1, 4)
         sendData(flight)
     }
 
