@@ -8,13 +8,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { GiCommercialAirplane } from "react-icons/gi";
-import React from "react";
 import { CreateFlight } from "../Flight/CreateFlight";
 import { LoginForm } from "../Auth/LoginForm";
 import { RegistrationForm } from "../Auth/RegistrationForm";
 import { useApplicationStore } from "../../store/application.store";
 import { Role } from "../../store/auth-store/model/enums/role.enum";
-import { TiTicket } from 'react-icons/ti'
+import { TiTicket } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
@@ -34,8 +33,9 @@ export const Header = () => {
     onClose: onCloseRegistration,
   } = useDisclosure();
 
-  const user = useApplicationStore(state => state.user)
-  const navigate = useNavigate()
+  const user = useApplicationStore((state) => state.user);
+  const logout = useApplicationStore((state) => state.logout);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -52,28 +52,38 @@ export const Header = () => {
             </Text>
           </Link>
           <Flex gap="15px">
-            <Link onClick={onOpenLogin} color={"white"}>
-              Login
-            </Link>
-            <Link color={"white"} onClick={onOpenRegistration}>Register</Link>
+            {user == null && (
+              <Link onClick={onOpenLogin} color={"white"}>
+                Login
+              </Link>
+            )}
+            {user == null && (
+              <Link color={"white"} onClick={onOpenRegistration}>
+                Register
+              </Link>
+            )}
+
+            {user != null && (
+              <Link color={"white"} onClick={logout}>
+                Logout
+              </Link>
+            )}
           </Flex>
         </Flex>
         <Divider></Divider>
-        <Flex m={"20px 0"}>
-          {
-            user?.role === Role.ADMINISTRATOR &&
+        <Flex m={"20px 0 10px 0"}>
+          {user?.role === Role.ADMINISTRATOR && (
             <Button onClick={onOpenAdd}>
               <GiCommercialAirplane></GiCommercialAirplane>
               Create flight
             </Button>
-          }
-          {
-            user?.role === Role.REGULAR &&
-            <Button gap='10px' onClick={() => navigate('/ticket-history')}>
+          )}
+          {user?.role === Role.REGULAR && (
+            <Button gap="10px" onClick={() => navigate("/ticket-history")}>
               <TiTicket fontSize={20} />
               My tickets
             </Button>
-          }
+          )}
         </Flex>
       </Box>
       <CreateFlight
