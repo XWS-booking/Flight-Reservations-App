@@ -13,9 +13,9 @@ import { PurchaseFlightTicket } from '../../components/Flight/PurchaseFlightTick
 export const FlightPage = () => {
 
     const getFlights = useApplicationStore(state => state.getFlights)
-    const updateGetFlightResState = useApplicationStore(state => state.updateGetFlightResState)
+    const spinner = useApplicationStore(state => state.spinner)
     const totalCount = useApplicationStore(state => state.totalCount)
-    const getFlightsRes = useApplicationStore(state => state.getFlightsRes)
+    const flights = useApplicationStore(state => state.flights)
     const deleteFlight = useApplicationStore(state => state.deleteFlight)
     const purchaseFlightTicket = useApplicationStore(state => state.purchaseFlightTicket)
     const user = useApplicationStore(state => state.user)
@@ -33,7 +33,6 @@ export const FlightPage = () => {
     })
 
     useEffect(() => {
-        updateGetFlightResState()
         getFlights(data, 1, 4)
     }, [])
 
@@ -45,7 +44,6 @@ export const FlightPage = () => {
 
     const handlePageClick = async (event: any) => {
 
-        await updateGetFlightResState()
         await getFlights(data, event.selected + 1, 4)
         setCurrentPage(event.selected + 1)
     };
@@ -83,8 +81,8 @@ export const FlightPage = () => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {getFlightsRes &&
-                            getFlightsRes.map((item: Flight) => (
+                        {flights &&
+                            flights.map((item: Flight) => (
                                 <Tr key={item.id}>
                                     <Td>{format(new Date(item.date), 'dd-MM-yyyy HH:MM').toString()}</Td>
                                     <Td>{item.departure}</Td>
@@ -115,7 +113,7 @@ export const FlightPage = () => {
                     </Tbody>
                 </Table>
             </TableContainer>
-            { getFlightsRes.length == 0 &&
+            { spinner == true &&
                 <Flex justifyContent='center'>
                     <Spinner size='xl' />
                 </Flex>

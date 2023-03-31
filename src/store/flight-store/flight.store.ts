@@ -6,11 +6,12 @@ import { AppStore, useApplicationStore } from "../application.store"
 
 export type FlightStoreState = {
     addFlightRes: any
-    getFlightsRes: Flight[]
+    flights: Flight[]
     totalCount: number
     deleteFlightRes: any
     purchaseTicketRes: any
     userFlightTickets: any
+    spinner: boolean
 }
 export type FlightActions = {
     createFlight: (flight: Flight) => Promise<void>
@@ -18,16 +19,16 @@ export type FlightActions = {
     deleteFlight: (flightId: string) => Promise<void>
     purchaseFlightTicket: (flightId: string, quantity: number) => Promise<void>
     getUserTicketHistory: () => Promise<void>
-    updateGetFlightResState: () => Promise<void>
 }
 
 export const state: FlightStoreState = {
     addFlightRes: null,
-    getFlightsRes: [],
+    flights: [],
     totalCount: 0,
     deleteFlightRes: null,
     purchaseTicketRes: null,
-    userFlightTickets: null
+    userFlightTickets: null,
+    spinner: false
 }
 
 export type FlightStore = FlightStoreState & FlightActions
@@ -60,6 +61,12 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
         }
     },
     getFlights: async (flight: Flight, pageNumber: number, pageSize: number) => {
+        set(
+            produce((state: FlightStore) => {
+                state.spinner = true
+                return state
+            })
+        )
         try {
             const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/flights/getAll/${pageNumber}/${pageSize}`, flight, {
                 headers: {
@@ -69,7 +76,8 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
             })
             set(
                 produce((state: FlightStore) => {
-                    state.getFlightsRes = res.data.data
+                    state.spinner = false
+                    state.flights = res.data.data
                     state.totalCount = res.data.totalCount
                     return state
                 })
@@ -126,18 +134,6 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
                 produce((state: FlightStore) => {
                     state.userFlightTickets = res.data.tickets
                     console.log('res ', state.userFlightTickets)
-                    return state
-                })
-            )
-        } catch (e) {
-            console.log(e)
-        }
-    },
-    updateGetFlightResState: async () => {
-        try {
-            set(
-                produce((state: FlightStore) => {
-                    state.getFlightsRes = []
                     return state
                 })
             )
