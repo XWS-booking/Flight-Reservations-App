@@ -59,6 +59,13 @@ export const FlightPage = () => {
         await getFlights(data, currentPage, 4)
     }
 
+    const handleSelectFlight = (flight: Flight) => {
+        setSelectedFlight(flight)
+        onOpen()
+    }
+
+    const [selectedFlight, setSelectedFlight] = useState<Flight>(data)
+
     return (
         <>
             <SearchFlight sendData={sendData}></SearchFlight>
@@ -102,10 +109,9 @@ export const FlightPage = () => {
                                     {
                                         user?.role === Role.REGULAR &&
                                         <Td>
-                                            <Button onClick={onOpen}>
+                                            <Button onClick={() => handleSelectFlight(item)}>
                                                 <BsFillCartPlusFill fontSize={20} color='green' />
                                             </Button>
-                                            <PurchaseFlightTicket isOpen={isOpen} onOpen={onOpen} onClose={onClose} flight={item} handlePurchase={handlePurchase} />
                                         </Td>
                                     }
                                 </Tr>
@@ -113,7 +119,9 @@ export const FlightPage = () => {
                     </Tbody>
                 </Table>
             </TableContainer>
-            { spinner == true &&
+            <PurchaseFlightTicket isOpen={isOpen} onOpen={onOpen} onClose={onClose} flight={selectedFlight} handlePurchase={handlePurchase} />
+
+            {spinner == true &&
                 <Flex justifyContent='center'>
                     <Spinner size='xl' />
                 </Flex>

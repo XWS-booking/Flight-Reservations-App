@@ -1,5 +1,5 @@
 import { Button, Flex, Input } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 
 interface Props {
@@ -9,9 +9,10 @@ interface Props {
 }
 
 export const Counter = ({ quantity, setQuantity, maxQuantity }: Props) => {
+
     const handleChange = (val: number) => {
         if (quantity + val <= 0)
-            return setQuantity(1)
+            return setQuantity(0)
         if (quantity + val > maxQuantity)
             return setQuantity(maxQuantity)
         setQuantity(quantity + val)
