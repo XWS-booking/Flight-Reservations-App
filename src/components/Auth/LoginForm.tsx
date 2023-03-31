@@ -20,6 +20,7 @@ import {
   LOGIN_DEFAULT_VALUES,
   LOGIN_VALIDATION_SCHEMA,
 } from "../../utils/auth.constants";
+import { displayToast } from "../../utils/toast.caller";
 
 export type FormValues = {
   email: string;
@@ -44,16 +45,10 @@ export const LoginForm = ({ isOpen, onOpen, onClose }: Props) => {
   const toast = useToast();
   const validateLogin = (isLoginValid: boolean) => {
     if (!isLoginValid) {
-      toast({
-        title: "Login failed.",
-        description: "Email or password not valid.",
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-        position: "top-right",
-      });
+      displayToast(toast, "Login failed!", "error");
       return;
     }
+    displayToast(toast, "Successfully logged in!", "success");
     onClose();
   };
   const handleOnSubmit = async (values: FormValues) => {
@@ -65,7 +60,7 @@ export const LoginForm = ({ isOpen, onOpen, onClose }: Props) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader textAlign={'center'}>Login</ModalHeader>
+        <ModalHeader textAlign={"center"}>Login</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box mx={4} mb={6}>
