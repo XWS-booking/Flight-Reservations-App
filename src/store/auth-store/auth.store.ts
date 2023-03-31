@@ -1,4 +1,5 @@
-import { create, StateCreator } from "zustand"
+import { produce } from 'immer';
+import { StateCreator } from "zustand"
 import { DEFAULT_HEADERS } from "../../utils/auth.constants"
 import { User } from "./model/user.model"
 import { Login } from "./types/login.type"
@@ -9,13 +10,14 @@ export type AuthStoreState = {
     user: User | null
 }
 export type AuthActions = {
-    login: (data: Login) => void,
+    login: (data: Login) => Promise<boolean>,
     register: (data: Registration) => void,
+    logout: () => void,
 }
 
 export const state: AuthStoreState = {
     token: null,
-    user: null
+    user: null,
 }
 
 
@@ -28,8 +30,14 @@ export const authStoreSlice: StateCreator<AuthStore> = (set) => ({
             method: 'POST',
             body: JSON.stringify({ email, password }),
             headers: DEFAULT_HEADERS
+        }).then(res => {
+            if(res.status >= 400) {
+                return null
+            }
+            return res.json();
         });
-        const token = await rawResponse.json();
+        const token = await rawResponse;
+        if(token == null) return false
         const resp = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/user`, {
             method: 'GET',
             headers: {
@@ -38,8 +46,23 @@ export const authStoreSlice: StateCreator<AuthStore> = (set) => ({
             }
         });
         const user = await resp.json();
-        set({ user: user })
-        set({ token: token['access_token'] })
+        set(
+            produce((state: AuthStore) => {
+                state.token = token['access_token']
+                state.user = user
+                return state
+            })
+        )
+        return true;
+    },
+    logout: () => {
+        set(
+            produce((state: AuthStore) => {
+                state.token = null
+                state.user = null
+                return state
+            })
+        )
     },
 
     register: async (data: Registration) => {
@@ -58,3 +81,4 @@ export const authStoreSlice: StateCreator<AuthStore> = (set) => ({
         }
     },
 })
+

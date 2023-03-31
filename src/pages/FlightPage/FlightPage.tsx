@@ -1,4 +1,4 @@
-import { Button, Flex, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
+import { Button, Flex, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useApplicationStore } from '../../store/application.store';
 import "../../styles/pagination.css"
@@ -13,8 +13,9 @@ import { PurchaseFlightTicket } from '../../components/Flight/PurchaseFlightTick
 export const FlightPage = () => {
 
     const getFlights = useApplicationStore(state => state.getFlights)
+    const spinner = useApplicationStore(state => state.spinner)
     const totalCount = useApplicationStore(state => state.totalCount)
-    const getFlightsRes = useApplicationStore(state => state.getFlightsRes)
+    const flights = useApplicationStore(state => state.flights)
     const deleteFlight = useApplicationStore(state => state.deleteFlight)
     const purchaseFlightTicket = useApplicationStore(state => state.purchaseFlightTicket)
     const user = useApplicationStore(state => state.user)
@@ -32,7 +33,7 @@ export const FlightPage = () => {
     })
 
     useEffect(() => {
-        getFlights(data, 1, 2)
+        getFlights(data, 1, 4)
     }, [])
 
 
@@ -42,19 +43,20 @@ export const FlightPage = () => {
     };
 
     const handlePageClick = async (event: any) => {
-        await getFlights(data, event.selected + 1, 2)
+
+        await getFlights(data, event.selected + 1, 4)
         setCurrentPage(event.selected + 1)
     };
 
     const handleDeleteFlight = async (id: string) => {
         await deleteFlight(id)
-        await getFlights(data, currentPage, 2)
+        await getFlights(data, currentPage, 4)
     }
 
     const handlePurchase = async (flightId: string, quantity: number) => {
         await purchaseFlightTicket(flightId, quantity)
         onClose()
-        await getFlights(data, currentPage, 2)
+        await getFlights(data, currentPage, 4)
     }
 
     return (
@@ -79,8 +81,8 @@ export const FlightPage = () => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {getFlightsRes &&
-                            getFlightsRes.map((item: Flight) => (
+                        {flights &&
+                            flights.map((item: Flight) => (
                                 <Tr key={item.id}>
                                     <Td>{format(new Date(item.date), 'dd-MM-yyyy HH:MM').toString()}</Td>
                                     <Td>{item.departure}</Td>
@@ -111,6 +113,11 @@ export const FlightPage = () => {
                     </Tbody>
                 </Table>
             </TableContainer>
+            { spinner == true &&
+                <Flex justifyContent='center'>
+                    <Spinner size='xl' />
+                </Flex>
+            }
             <Flex flexDirection='column' justifyContent='column' padding='15px 20px' boxSizing='border-box' width='100%' height='100%' mt={'auto'}>
                 <ReactPaginate
                     activeClassName={'item active '}
@@ -123,7 +130,7 @@ export const FlightPage = () => {
                     nextClassName={"item next "}
                     nextLabel=">"
                     onPageChange={handlePageClick}
-                    pageCount={Math.ceil(totalCount / 2)}
+                    pageCount={Math.ceil(totalCount / 4)}
                     pageClassName={'item pagination-page '}
                     pageRangeDisplayed={2}
                     previousClassName={"item previous"}
