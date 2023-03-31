@@ -1,8 +1,6 @@
 import {
   Box,
   Button,
-  Text,
-  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -12,9 +10,7 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
