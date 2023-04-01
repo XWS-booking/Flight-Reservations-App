@@ -162,7 +162,8 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
             })
         )
         try {
-            const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/flights/${flightId}/buy-tickets/${quantity}`, {
+            console.log(get().token)
+            const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/flights/${flightId}/buy-tickets/${quantity}`, {}, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + get().token
