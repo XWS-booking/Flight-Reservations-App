@@ -19,6 +19,7 @@ export const FlightPage = () => {
     const totalCount = useApplicationStore(state => state.totalCount)
     const flights = useApplicationStore(state => state.flights)
     const deleteFlight = useApplicationStore(state => state.deleteFlight)
+    const deleteFlightRes = useApplicationStore(state => state.deleteFlightRes)
     const purchaseFlightTicket = useApplicationStore(state => state.purchaseFlightTicket)
     const purchaseRes = useApplicationStore(state => state.purchaseTicketRes)
     const user = useApplicationStore(state => state.user)
@@ -50,8 +51,19 @@ export const FlightPage = () => {
             displayToast(toast, "Something went wrong", 'error')
             return
         }
+    }, [purchaseRes.status])
 
-    }, [purchaseRes])
+
+    useEffect(() => {
+        if (deleteFlightRes.status === ResponseStatus.Success) {
+            displayToast(toast, "Flight deleted successful!", 'success')
+            return
+        }
+        if (deleteFlightRes.status === ResponseStatus.Error) {
+            displayToast(toast, "Something went wrong", 'error')
+            return
+        }
+    }, [deleteFlightRes.status])
 
 
     const sendData = (flight: Flight) => {

@@ -35,7 +35,7 @@ export const PurchaseFlightTicket = ({ isOpen, onOpen, onClose, flight, handlePu
                     <Counter quantity={quantity} setQuantity={setQuantity} maxQuantity={flight.freeSeats}></Counter>
                 </ModalBody>
                 <ModalFooter width='100%' display='flex' justifyContent='center'>
-                    <Button bg={'#003b95'} color={'#fff'} _hover={{ bg: '#136ed1' }} width='80%' onClick={() => handleClick()}>Purchase ticket</Button>
+                    <Button bg={'#003b95'} color={'#fff'} _hover={{ bg: '#136ed1' }} width='80%' onClick={() => handleClick()} isDisabled={quantity === 0}>Purchase ticket</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal >

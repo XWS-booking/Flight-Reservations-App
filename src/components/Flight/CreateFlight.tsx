@@ -1,10 +1,12 @@
-import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from '@chakra-ui/react'
+import { Button, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useTab, useToast } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useApplicationStore } from '../../store/application.store'
 import { Flight } from '../../store/flight-store/types/flight.type'
 import { CREATE_FLIGHT_VALIDATION_SCHEMA } from '../../utils/flight.constants'
+import { ResponseStatus } from '../../store/flight-store/flight.store'
+import { displayToast } from '../../utils/toast.caller'
 
 interface Props {
     isOpen: boolean
@@ -25,7 +27,9 @@ type Inputs = {
 export const CreateFlight = ({ isOpen, onOpen, onClose }: Props) => {
 
     const createFlight = useApplicationStore(state => state.createFlight)
+    const createFlightRes = useApplicationStore(state => state.addFlightRes)
     const getFlights = useApplicationStore(state => state.getFlights)
+    const toast = useToast()
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(CREATE_FLIGHT_VALIDATION_SCHEMA)
@@ -43,6 +47,16 @@ export const CreateFlight = ({ isOpen, onOpen, onClose }: Props) => {
             freeSeats: 0
         }, 1, 4)
     }
+
+    useEffect(() => {
+        if (createFlightRes.status === ResponseStatus.Success) {
+            displayToast(toast, 'Flight created successfully!', 'success');
+            return
+        } else if (createFlightRes.status === ResponseStatus.Error) {
+            displayToast(toast, 'Something went wrong!', 'error');
+            return
+        }
+    }, [createFlightRes.status])
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
