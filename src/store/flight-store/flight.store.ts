@@ -4,12 +4,24 @@ import { Flight } from "./types/flight.type"
 import produce from "immer"
 import { AppStore, useApplicationStore } from "../application.store"
 
+export enum ResponseStatus {
+    Success = "success",
+    Loading = "loading",
+    Error = "error",
+}
+
+export type ApiResponse = {
+    data: any
+    status: ResponseStatus
+    error: null
+}
+
 export type FlightStoreState = {
     addFlightRes: any
     flights: Flight[]
     totalCount: number
     deleteFlightRes: any
-    purchaseTicketRes: any
+    purchaseTicketRes: ApiResponse
     userFlightTickets: any
     spinner: boolean
 }
@@ -26,7 +38,11 @@ export const state: FlightStoreState = {
     flights: [],
     totalCount: 0,
     deleteFlightRes: null,
-    purchaseTicketRes: null,
+    purchaseTicketRes: {
+        data: null,
+        status: ResponseStatus.Loading,
+        error: null
+    },
     userFlightTickets: null,
     spinner: false
 }
@@ -105,6 +121,12 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
         }
     },
     purchaseFlightTicket: async (flightId: string, quantity: number) => {
+        set(
+            produce((state: AppStore) => {
+                state.purchaseTicketRes.status = ResponseStatus.Loading
+                return state
+            })
+        )
         try {
             const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/flights/${flightId}/buy-tickets/${quantity}`, {
                 headers: {
@@ -112,14 +134,23 @@ export const flightStoreSlice: StateCreator<AppStore, [], [], FlightStore> = (se
                     "Authorization": "Bearer " + get().token
                 }
             })
+
             set(
-                produce((state: FlightStore) => {
-                    state.purchaseTicketRes = res.data
+                produce((state: AppStore) => {
+                    state.purchaseTicketRes.data = res.data
+                    state.purchaseTicketRes.status = ResponseStatus.Success
                     return state
                 })
             )
+            console.log('eee', get().purchaseTicketRes.status)
         } catch (e) {
             console.log(e)
+            set(
+                produce((state: AppStore) => {
+                    state.purchaseTicketRes.status = ResponseStatus.Error
+                    return state
+                })
+            )
         }
     },
     getUserTicketHistory: async () => {

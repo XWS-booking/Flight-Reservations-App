@@ -1,4 +1,4 @@
-import { Button, Flex, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
+import { Button, Flex, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure, useToast } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useApplicationStore } from '../../store/application.store';
 import "../../styles/pagination.css"
@@ -9,6 +9,8 @@ import { BsFillTrash3Fill, BsFillCartPlusFill } from 'react-icons/bs'
 import { Flight } from '../../store/flight-store/types/flight.type';
 import { Role } from '../../store/auth-store/model/enums/role.enum';
 import { PurchaseFlightTicket } from '../../components/Flight/PurchaseFlightTicket';
+import { displayToast } from '../../utils/toast.caller';
+import { ResponseStatus } from '../../store/flight-store/flight.store';
 
 export const FlightPage = () => {
 
@@ -18,9 +20,11 @@ export const FlightPage = () => {
     const flights = useApplicationStore(state => state.flights)
     const deleteFlight = useApplicationStore(state => state.deleteFlight)
     const purchaseFlightTicket = useApplicationStore(state => state.purchaseFlightTicket)
+    const purchaseRes = useApplicationStore(state => state.purchaseTicketRes)
     const user = useApplicationStore(state => state.user)
     const [currentPage, setCurrentPage] = useState<number>(1)
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const toast = useToast()
 
     const [data, setData] = useState({
         id: "",
@@ -35,6 +39,19 @@ export const FlightPage = () => {
     useEffect(() => {
         getFlights(data, 1, 4)
     }, [])
+
+    useEffect(() => {
+        if (purchaseRes.status === ResponseStatus.Success) {
+            displayToast(toast, "Purchase successful!", 'success')
+            return
+        }
+
+        if (purchaseRes.status === ResponseStatus.Error) {
+            displayToast(toast, "Something went wrong", 'error')
+            return
+        }
+
+    }, [purchaseRes])
 
 
     const sendData = (flight: Flight) => {
