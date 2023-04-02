@@ -33,6 +33,7 @@ export const PurchaseFlightTicket = ({ isOpen, onOpen, onClose, flight, handlePu
                     <Text fontSize={18} fontWeight={500}>{flight.departure} - {flight.destination}</Text>
                     <Text fontSize={16}>{format(new Date(flight.date), 'dd-MM-yyyy HH:MM').toString()}</Text>
                     <Counter quantity={quantity} setQuantity={setQuantity} maxQuantity={flight.freeSeats}></Counter>
+                    <Text fontSize={16}>{quantity*flight.price} RSD</Text>
                 </ModalBody>
                 <ModalFooter width='100%' display='flex' justifyContent='center'>
                     <Button bg={'#003b95'} color={'#fff'} _hover={{ bg: '#136ed1' }} width='80%' onClick={() => handleClick()}>Purchase ticket</Button>
