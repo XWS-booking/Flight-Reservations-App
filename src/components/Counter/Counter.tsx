@@ -22,8 +22,7 @@ export const Counter = ({ quantity, setQuantity, maxQuantity }: Props) => {
             <Button onClick={() => handleChange(-1)}>
                 <AiOutlineMinus fontSize={18} />
             </Button>
-            <Input bg={'white'} width='55px' value={quantity} onChange={(e) => handleChange(parseInt(e.target.value))}>
-            </Input>
+            <Input bg={'white'} width='55px' value={quantity} onChange={(e) => handleChange(parseInt(e.target.value))} />
             <Button onClick={() => handleChange(1)}>
                 <AiOutlinePlus fontSize={18} />
             </Button>

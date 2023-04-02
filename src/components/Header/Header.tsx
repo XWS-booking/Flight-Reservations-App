@@ -37,6 +37,11 @@ export const Header = () => {
   const logout = useApplicationStore((state) => state.logout);
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
+
   return (
     <>
       <Box width="100%" bg={"#003b95"} p={"10px 25px"}>
@@ -64,7 +69,7 @@ export const Header = () => {
             )}
 
             {user != null && (
-              <Link color={"white"} onClick={logout}>
+              <Link color={"white"} onClick={handleLogout}>
                 Logout
               </Link>
             )}
