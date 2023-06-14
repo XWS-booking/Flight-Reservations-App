@@ -15,6 +15,7 @@ import { useApplicationStore } from "../../store/application.store";
 import { Role } from "../../store/auth-store/model/enums/role.enum";
 import { TiTicket } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
+import { ApiKeyForm } from "../ApiKey/ApiKeyForm";
 
 export const Header = () => {
   const {
@@ -33,14 +34,20 @@ export const Header = () => {
     onClose: onCloseRegistration,
   } = useDisclosure();
 
+  const {
+    isOpen: isOpenGenerateApiKey,
+    onOpen: onOpenGenerateApiKey,
+    onClose: onCloseGenerateApiKey,
+  } = useDisclosure();
+
   const user = useApplicationStore((state) => state.user);
   const logout = useApplicationStore((state) => state.logout);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout()
-    navigate('/')
-  }
+    logout();
+    navigate("/");
+  };
 
   return (
     <>
@@ -76,7 +83,7 @@ export const Header = () => {
           </Flex>
         </Flex>
         <Divider></Divider>
-        <Flex m={"20px 0 10px 0"}>
+        <Flex m={"20px 0 10px 0"} gap={4}>
           {user?.role === Role.ADMINISTRATOR && (
             <Button onClick={onOpenAdd}>
               <GiCommercialAirplane></GiCommercialAirplane>
@@ -89,12 +96,23 @@ export const Header = () => {
               My tickets
             </Button>
           )}
+          {user?.role === Role.REGULAR && (
+            <Button onClick={onOpenGenerateApiKey}>
+              <TiTicket fontSize={20} />
+              Generate Api Key
+            </Button>
+          )}
         </Flex>
       </Box>
       <CreateFlight
         isOpen={isOpenAdd}
         onOpen={onOpenAdd}
         onClose={onCloseAdd}
+      />
+      <ApiKeyForm
+        isOpen={isOpenGenerateApiKey}
+        onOpen={onOpenGenerateApiKey}
+        onClose={onCloseGenerateApiKey}
       />
       <LoginForm
         isOpen={isOpenLogin}
