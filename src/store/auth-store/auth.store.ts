@@ -1,6 +1,7 @@
 import { produce } from 'immer';
 import { StateCreator } from "zustand"
 import { DEFAULT_HEADERS } from "../../utils/auth.constants"
+import { ApiKeyResponse } from './model/api-key.response';
 import { User } from "./model/user.model"
 import { Login } from "./types/login.type"
 import { Registration } from "./types/registration.type"
@@ -13,6 +14,7 @@ export type AuthActions = {
     login: (data: Login) => Promise<boolean>,
     register: (data: Registration) => void,
     logout: () => void,
+    generateApiKey:(permanent:boolean) => Promise<ApiKeyResponse>,
 }
 
 export const state: AuthStoreState = {
@@ -23,7 +25,7 @@ export const state: AuthStoreState = {
 
 export type AuthStore = AuthStoreState & AuthActions
 
-export const authStoreSlice: StateCreator<AuthStore> = (set) => ({
+export const authStoreSlice: StateCreator<AuthStore> = (set,get) => ({
     ...state,
     login: async ({ email, password }: Login) => {
         const rawResponse = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/signin`, {
@@ -78,6 +80,24 @@ export const authStoreSlice: StateCreator<AuthStore> = (set) => ({
             console.log(dt)
         } catch (e) {
             console.log(e)
+        }
+    },
+    generateApiKey: async (permanent: boolean) => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/user/api-key/${permanent}`, {
+                method: 'POST',
+                body: JSON.stringify({}),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + get().token
+                }
+            })
+
+            const dt = await response.json()
+            console.log(dt)
+            return {apiKey:dt,generatedApiKey:true,error_message:""}
+        } catch (e:any) {
+            return {apiKey:"",generatedApiKey:false,error_message:e.response.data}
         }
     },
 })
