@@ -32,7 +32,7 @@
     "zustand": "^4.3.6"
   },
   "scripts": {
-    "start": "react-dotenv && react-scripts start",
+    "start": "set PORT=3002 && react-dotenv && react-scripts start",
     "build": "react-dotenv && react-scripts build",
     "test": "react-dotenv && react-scripts test",
     "eject": "react-dotenv && react-scripts eject"
