@@ -26,6 +26,7 @@
     "react-paginate": "^8.1.4",
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
+    "serve": "^14.2.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "yup": "^1.0.2",
@@ -33,6 +34,8 @@
   },
   "scripts": {
     "start": "set PORT=3002 && react-dotenv && react-scripts start",
+    "start:prod": "serve build -s -n -L -p $PORT",
+    "build:prod": "react-scripts build",
     "build": "react-dotenv && react-scripts build",
     "test": "react-dotenv && react-scripts test",
     "eject": "react-dotenv && react-scripts eject"
